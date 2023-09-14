@@ -16,6 +16,16 @@ public class AccountTest {
 		her = new Account("Serra");
 		another = new Account("Cecile");
 	}
+	
+	@Test
+	public void cannotInitiateFriendshipWithAnExistingFriend() {
+		me.requestFriendship(her);
+		her.friendshipAccepted(me);
+		assertTrue(her.hasFriend(me.getUserName()));
+		me.requestFriendship(her);
+		assertFalse(me.getIncomingRequests().contains(her.getUserName()));
+		assertFalse(her.getIncomingRequests().contains(me.getUserName()));
+	}
 
 	@Test
 	public void canBeFriendsWithAnother() {
@@ -68,13 +78,107 @@ public class AccountTest {
 	}
 	
 	@Test
-	public void cannotInitiateFriendshipWithAnExistingFriend() {
+	public void cannotBeFriendsWithAnExistingFriend() {
 		me.requestFriendship(her);
 		her.friendshipAccepted(me);
 		assertTrue(her.hasFriend(me.getUserName()));
 		me.requestFriendship(her);
 		assertFalse(me.getIncomingRequests().contains(her.getUserName()));
 		assertFalse(her.getIncomingRequests().contains(me.getUserName()));
+	}
+
+	@Test
+	public void canRegisterOutgoingRequestsForNewFriends() {
+		her.requestFriendship(me);
+		assertTrue(me.getOutgoingRequests().contains(her.getUserName()));
+	}
+
+	@Test
+	public void noDuplicateOutgoingRequests() {
+		her.requestFriendship(me);
+		her.requestFriendship(me);
+		assertEquals(1, me.getOutgoingRequests().size());
+	}
+
+	@Test
+	public void outgoingRequestsAreRemovedWhenAccepted() {
+		her.requestFriendship(me);
+		me.friendshipAccepted(her);
+		assertFalse(me.getOutgoingRequests().contains(her.getUserName()));
+	}
+
+	@Test
+	public void noOutgoingRequestIfAlreadyFriends() {
+		her.requestFriendship(me);
+		me.friendshipAccepted(her);
+		her.requestFriendship(me);
+		assertEquals(0, me.getOutgoingRequests().size());
+	}
+
+	@Test
+	public void outgoingRequestRemovedIfRejected() {
+		her.requestFriendship(me);
+		me.friendshipRejected(her);
+		assertFalse(me.getOutgoingRequests().contains(her.getUserName()));
+	}
+
+	@Test
+	public void incomingRequestRemovedIfRejected() {
+		her.requestFriendship(me);
+		me.friendshipRejected(her);
+		assertFalse(me.getIncomingRequests().contains(her.getUserName()));
+	}
+
+	@Test
+	public void rejectionDoesNotAffectCurrentFriends() {
+		her.requestFriendship(me);
+		me.friendshipAccepted(her);
+		me.requestFriendship(another);
+		me.friendshipRejected(another);
+		assertTrue(me.hasFriend(her.getUserName()));
+		assertFalse(me.hasFriend(another.getUserName()));
+	}
+
+	@Test
+	public void autoAcceptEstablishesFriendshipAutomatically() {
+		her.autoAcceptFriendships();
+		her.requestFriendship(me);
+		assertTrue(me.hasFriend(her.getUserName()));
+		assertTrue(her.hasFriend(me.getUserName()));
+	}
+
+	@Test
+	public void autoAcceptDoesNotAffectCurrentRequests() {
+		her.requestFriendship(me);
+		her.autoAcceptFriendships();
+		assertTrue(her.getIncomingRequests().contains(me.getUserName()));
+		assertTrue(me.getOutgoingRequests().contains(her.getUserName()));
+	}
+
+	@Test
+	public void duplicateRequestAfterAutoAcceptAreAccepted() {
+		her.requestFriendship(me);
+		her.autoAcceptFriendships();
+		her.requestFriendship(me);
+		assertTrue(me.hasFriend(her.getUserName()));
+		assertTrue(her.hasFriend(me.getUserName()));
+	}
+
+	@Test
+	public void cancelFriendshipRemovesFromFriends() {
+		her.requestFriendship(me);
+		me.friendshipAccepted(her);
+		her.cancelFriendship(me);
+		assertFalse(me.hasFriend(her.getUserName()));
+		assertFalse(her.hasFriend(me.getUserName()));
+	}
+
+	@Test
+	public void cancelFriendshipDoesNotAffectPendingRequests() {
+		her.requestFriendship(me);
+		her.cancelFriendship(me);
+		assertTrue(me.getOutgoingRequests().contains(her.getUserName()));
+		assertTrue(her.getIncomingRequests().contains(me.getUserName()));
 	}
 
 }

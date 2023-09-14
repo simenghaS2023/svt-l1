@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/simeng/Library/Mobile Documents/com~apple~CloudDocs/US/CMU/Courses/2023 Fall/Software Verification and Testing/asset/hamcrest-core-1.3.jar",
+        "/Users/simeng/Library/Mobile Documents/com~apple~CloudDocs/US/CMU/Courses/2023 Fall/Software Verification and Testing/asset/junit-4.13.1.jar"
+    ]
+}
