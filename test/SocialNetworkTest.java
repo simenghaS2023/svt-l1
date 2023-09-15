@@ -17,6 +17,7 @@ public class SocialNetworkTest {
     
 	@Before
 	public void setUp() throws Exception {
+		sn = new SocialNetwork();
 	}
 
 	@After
