@@ -272,4 +272,20 @@ public class SocialNetworkTest {
 		assertEquals(mary, sn.getLoggedInUser());
 	}
 
+	@Test
+	public void hasMemberReturnsFalseForNonMembers() {
+		sn.join("Mary");
+		sn.join("Paul");
+		assertFalse(sn.hasMember("John"));
+	}
+
+	@Test
+	public void hasMemberReturnsTrueForMembers() {
+		sn.join("Mary");
+		sn.join("Paul");
+		assertTrue(sn.hasMember("Mary"));
+		assertTrue(sn.hasMember("Paul"));
+	}
+	
+
 }
