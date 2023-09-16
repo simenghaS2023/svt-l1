@@ -4,6 +4,7 @@ import java.util.Set;
 public class SocialNetwork implements ISocialNetwork{
 	
 	private Set<Account> accounts = new HashSet<Account>();
+	private Account loggedInUser = null;
 
 	// join SN with a new user name
 	public Account join(String userName) {
@@ -32,59 +33,59 @@ public class SocialNetwork implements ISocialNetwork{
 		return members;
 	}
 	
-	// from my account, send a friend request to user with userName from my account
-	public void sendFriendshipTo(String userName, Account me) {
-		Account accountForUserName = findAccountForUserName(userName);
-		accountForUserName.requestFriendship(me);
-	}
+	// // from my account, send a friend request to user with userName from my account
+	// public void sendFriendshipTo(String userName, Account me) {
+	// 	Account accountForUserName = findAccountForUserName(userName);
+	// 	accountForUserName.requestFriendship(me);
+	// }
 
-	// from my account, accept a pending friend request from another user with userName
-	public void acceptFriendshipFrom(String userName, Account me) {
-		Account accountForUserName = findAccountForUserName(userName);
-		accountForUserName.friendshipAccepted(me);
-	}
+	// // from my account, accept a pending friend request from another user with userName
+	// public void acceptFriendshipFrom(String userName, Account me) {
+	// 	Account accountForUserName = findAccountForUserName(userName);
+	// 	accountForUserName.friendshipAccepted(me);
+	// }
 
-	public void acceptAllFriendshipsTo(Account account) {
-		Set<String> incomingRequestCopy = new HashSet<String>(account.getIncomingRequests());
-		for (String each : incomingRequestCopy) {
-			acceptFriendshipFrom(each, account);
-		}
-	}
+	// public void acceptAllFriendshipsTo(Account account) {
+	// 	Set<String> incomingRequestCopy = new HashSet<String>(account.getIncomingRequests());
+	// 	for (String each : incomingRequestCopy) {
+	// 		acceptFriendshipFrom(each, account);
+	// 	}
+	// }
 
-	public void rejectFriendshipFrom(String userName, Account me) {
-		Account accountForUserName = findAccountForUserName(userName);
-		accountForUserName.friendshipRejected(accountForUserName);
-	}
+	// public void rejectFriendshipFrom(String userName, Account me) {
+	// 	Account accountForUserName = findAccountForUserName(userName);
+	// 	accountForUserName.friendshipRejected(accountForUserName);
+	// }
 
-	public void rejectAllFriendshipsTo(Account account) {
-		Set<String> incomingRequestCopy = new HashSet<String>(account.getIncomingRequests());
-		for (String each : incomingRequestCopy) {
-			rejectFriendshipFrom(each, account);
-		}
-	}
+	// public void rejectAllFriendshipsTo(Account account) {
+	// 	Set<String> incomingRequestCopy = new HashSet<String>(account.getIncomingRequests());
+	// 	for (String each : incomingRequestCopy) {
+	// 		rejectFriendshipFrom(each, account);
+	// 	}
+	// }
 
-    public void autoAcceptFriendshipsTo(Account account) {
-		account.autoAcceptFriendships();
-    }
+    // public void autoAcceptFriendshipsTo(Account account) {
+	// 	account.autoAcceptFriendships();
+    // }
 
-	public void sendFriendshipCancellationTo(String toName, Account fromUser) {
-		Account accountForUserName = findAccountForUserName(toName);
-		accountForUserName.cancelFriendship(fromUser);
-	}
+	// public void sendFriendshipCancellationTo(String toName, Account fromUser) {
+	// 	Account accountForUserName = findAccountForUserName(toName);
+	// 	accountForUserName.cancelFriendship(fromUser);
+	// }
 
-    public void leave(Account user) {
-		for (Account account : accounts) {
-			account.getFriends().remove(user.getUserName());
-			account.getIncomingRequests().remove(user.getUserName());
-			account.getOutgoingRequests().remove(user.getUserName());
-		}
-		accounts.remove(user);
-    }
+    // public void leave(Account user) {
+	// 	for (Account account : accounts) {
+	// 		account.getFriends().remove(user.getUserName());
+	// 		account.getIncomingRequests().remove(user.getUserName());
+	// 		account.getOutgoingRequests().remove(user.getUserName());
+	// 	}
+	// 	accounts.remove(user);
+    // }
 
 	@Override
 	public Account login(Account me) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'login'");
+		loggedInUser = me;
+		return loggedInUser;
 	}
 
 	@Override
@@ -95,8 +96,8 @@ public class SocialNetwork implements ISocialNetwork{
 
 	@Override
 	public void sendFriendshipTo(String userName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'sendFriendshipTo'");
+		Account accountForUserName = findAccountForUserName(userName);
+		accountForUserName.requestFriendship(loggedInUser);
 	}
 
 	@Override
@@ -113,38 +114,41 @@ public class SocialNetwork implements ISocialNetwork{
 
 	@Override
 	public void sendFriendshipCancellationTo(String userName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'sendFriendshipCancellationTo'");
+		Account accountForUserName = findAccountForUserName(userName);
+		accountForUserName.cancelFriendship(loggedInUser);
 	}
 
 	@Override
 	public void acceptFriendshipFrom(String userName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptFriendshipFrom'");
+		Account accountForUserName = findAccountForUserName(userName);
+		accountForUserName.friendshipAccepted(loggedInUser);
 	}
 
 	@Override
 	public void acceptAllFriendships() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptAllFriendships'");
+		Set<String> incomingRequestCopy = new HashSet<String>(loggedInUser.getIncomingRequests());
+		for (String each : incomingRequestCopy) {
+			acceptFriendshipFrom(each);
+		}
 	}
 
 	@Override
 	public void rejectFriendshipFrom(String userName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'rejectFriendshipFrom'");
+		Account accountForUserName = findAccountForUserName(userName);
+		accountForUserName.friendshipRejected(accountForUserName);
 	}
 
 	@Override
 	public void rejectAllFriendships() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'rejectAllFriendships'");
+		Set<String> incomingRequestCopy = new HashSet<String>(loggedInUser.getIncomingRequests());
+		for (String each : incomingRequestCopy) {
+			rejectFriendshipFrom(each);
+		}
 	}
 
 	@Override
 	public void autoAcceptFriendships() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'autoAcceptFriendships'");
+		loggedInUser.autoAcceptFriendships();
 	}
 
 	@Override
@@ -161,8 +165,16 @@ public class SocialNetwork implements ISocialNetwork{
 
 	@Override
 	public void leave() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'leave'");
+		for (Account account : accounts) {
+			account.getFriends().remove(loggedInUser.getUserName());
+			account.getIncomingRequests().remove(loggedInUser.getUserName());
+			account.getOutgoingRequests().remove(loggedInUser.getUserName());
+		}
+		accounts.remove(loggedInUser);
+	}
+
+	public Account getLoggedInUser() {
+		return loggedInUser;
 	}
 
 }
