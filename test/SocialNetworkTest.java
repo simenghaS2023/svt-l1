@@ -226,7 +226,7 @@ public class SocialNetworkTest {
 	@Test
 	public void leaveRemovesUserFromNetwork() {
 		Account john = sn.join("John");
-		Account mary = sn.join("Mary");
+		sn.join("Mary");
 		sn.login(john);
 		sn.leave();
 		assertFalse(sn.listMembers().contains("John"));
