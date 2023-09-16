@@ -79,4 +79,8 @@ public class Account  {
 		friends.remove(initiatingAccount.getUserName());
 		initiatingAccount.friends.remove(this.getUserName());
 	}
+
+	public void cancelAutoAcceptFriendships() {
+		autoAcceptFriendships = false;
+	}
 }

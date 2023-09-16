@@ -286,6 +286,34 @@ public class SocialNetworkTest {
 		assertTrue(sn.hasMember("Mary"));
 		assertTrue(sn.hasMember("Paul"));
 	}
+
+	@Test
+	public void friendRequestNotAutoAcceptedWhenAutoAcceptIsOff() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.login(john);
+		sn.cancelAutoAcceptFriendships();
+		sn.login(mary);
+		sn.sendFriendshipTo("John");
+		assertFalse(john.hasFriend("Mary"));
+		assertFalse(mary.hasFriend("John"));
+	}
 	
+	@Test
+	public void friendRequestNotAutoAcceptedWhenAutoAcceptIsTurnedOffAfterTurnedOn(){
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		Account paul = sn.join("Paul");
+		sn.login(john);
+		sn.autoAcceptFriendships();
+		sn.login(mary);
+		sn.sendFriendshipTo("John");
+		sn.login(john);
+		sn.cancelAutoAcceptFriendships();
+		sn.login(paul);
+		sn.sendFriendshipTo("John");
+		assertFalse(john.hasFriend("Paul"));
+		assertFalse(paul.hasFriend("John"));
+	}
 
 }
