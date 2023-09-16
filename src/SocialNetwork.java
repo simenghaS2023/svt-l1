@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class SocialNetwork {
+public class SocialNetwork implements ISocialNetwork{
 	
 	private Set<Account> accounts = new HashSet<Account>();
 
@@ -80,5 +80,89 @@ public class SocialNetwork {
 		}
 		accounts.remove(user);
     }
+
+	@Override
+	public Account login(Account me) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'login'");
+	}
+
+	@Override
+	public boolean hasMember(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'hasMember'");
+	}
+
+	@Override
+	public void sendFriendshipTo(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'sendFriendshipTo'");
+	}
+
+	@Override
+	public void block(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'block'");
+	}
+
+	@Override
+	public void unblock(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'unblock'");
+	}
+
+	@Override
+	public void sendFriendshipCancellationTo(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'sendFriendshipCancellationTo'");
+	}
+
+	@Override
+	public void acceptFriendshipFrom(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'acceptFriendshipFrom'");
+	}
+
+	@Override
+	public void acceptAllFriendships() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'acceptAllFriendships'");
+	}
+
+	@Override
+	public void rejectFriendshipFrom(String userName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'rejectFriendshipFrom'");
+	}
+
+	@Override
+	public void rejectAllFriendships() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'rejectAllFriendships'");
+	}
+
+	@Override
+	public void autoAcceptFriendships() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'autoAcceptFriendships'");
+	}
+
+	@Override
+	public void cancelAutoAcceptFriendships() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'cancelAutoAcceptFriendships'");
+	}
+
+	@Override
+	public Set<String> recommendFriends() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'recommendFriends'");
+	}
+
+	@Override
+	public void leave() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'leave'");
+	}
 
 }
