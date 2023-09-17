@@ -130,8 +130,28 @@ public class SocialNetwork implements ISocialNetwork{
 
 	@Override
 	public Set<String> recommendFriends() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'recommendFriends'");
+		Set<String> immediateFriends = loggedInUser.getFriends();
+		Map<String, Integer> secondDegreeFriends2FriendshipWithImmediateFriendsCount = new HashMap<String, Integer>();
+		for (String immediateFriendUsername : immediateFriends) {
+			Account immediateFriendAccount = findAccountForUserName(immediateFriendUsername);
+			Set<String> secondDegreeFriends = immediateFriendAccount.getFriends();
+			for (String secondDegreeFriend : secondDegreeFriends) {
+				int friendshipCount = secondDegreeFriends2FriendshipWithImmediateFriendsCount.getOrDefault(secondDegreeFriend, 0);
+				friendshipCount++;
+				secondDegreeFriends2FriendshipWithImmediateFriendsCount.put(secondDegreeFriend, friendshipCount);
+			}
+		}
+		Set<String> recommendedFriends = new HashSet<String>();
+		for (String secondDegreeFriend : secondDegreeFriends2FriendshipWithImmediateFriendsCount.keySet()) {
+			if (immediateFriends.contains(secondDegreeFriend)) {
+				continue;
+			}
+			if (secondDegreeFriends2FriendshipWithImmediateFriendsCount.get(secondDegreeFriend) >= 2) {
+				recommendedFriends.add(secondDegreeFriend);
+			}
+		}
+		return recommendedFriends;
+
 	}
 
 	@Override

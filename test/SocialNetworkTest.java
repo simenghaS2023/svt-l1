@@ -375,5 +375,57 @@ public class SocialNetworkTest {
 		assertTrue(john.getIncomingRequests().contains("Mary"));
 	}
 
+	@Test
+	public void recommendFriendsRecommendsEligibleNonFriends() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		Account paul = sn.join("Paul");
+		Account peter = sn.join("Peter");
+		setUpFriendshipDiamond(sn, john, mary, paul, peter);
+		sn.login(john);
+		Set<String> recommendedFriends = sn.recommendFriends();
+		assertTrue(recommendedFriends.contains("Peter"));
+	}
+
+	@Test
+	public void recommendFriendsDoesNotRecommendUserWhoIsAlreadyFriend() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		Account paul = sn.join("Paul");
+		Account peter = sn.join("Peter");
+		setUpFriendshipDiamond(sn, john, mary, paul, peter);
+		sn.login(john);
+		sn.sendFriendshipTo("Peter");
+		sn.login(peter);
+		sn.acceptFriendshipFrom("John");
+		sn.login(john);
+		Set<String> recommendedFriends = sn.recommendFriends();
+		assertFalse(recommendedFriends.contains("Peter"));
+	}
+
+	/**
+	 * This is a helper method to set up a friendship diamond where john is friends with mary and paul, and mary and paul are friends with peter. Peter is logged in at the end.
+	 * @param sn SocialNetwork where the following accounts are members
+	 * @param john Account with user name "John"
+	 * @param mary Account with user name "Mary"
+	 * @param paul Account with user name "Paul"
+	 * @param peter Account with user name "Peter"
+	 */
+	public void setUpFriendshipDiamond(SocialNetwork sn, Account john, Account mary, Account paul, Account peter) {
+		sn.login(john);
+		sn.sendFriendshipTo("Mary");
+		sn.sendFriendshipTo("Paul");
+		sn.login(peter);
+		sn.sendFriendshipTo("Mary");
+		sn.sendFriendshipTo("Paul");
+		sn.login(mary);
+		sn.acceptFriendshipFrom("John");
+		sn.acceptFriendshipFrom("Peter");
+		sn.login(paul);
+		sn.acceptFriendshipFrom("John");
+		sn.acceptFriendshipFrom("Peter");
+		sn.login(peter);
+
+	}
 
 }
