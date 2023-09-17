@@ -79,8 +79,9 @@ public class SocialNetwork implements ISocialNetwork{
 
 	@Override
 	public void unblock(String userName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'unblock'");
+		Set<Account> blockees = blocker2blockee.get(loggedInUser);
+		Account accountToUnblock = findAccountForUserName(userName);
+		blockees.remove(accountToUnblock);
 	}
 
 	@Override
