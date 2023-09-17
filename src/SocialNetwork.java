@@ -75,6 +75,17 @@ public class SocialNetwork implements ISocialNetwork{
 		}
 		Set<Account> blockees = blocker2blockee.get(loggedInUser);
 		blockees.add(blockeeAccount);
+
+		// remove existing friendship between loggedInUser and blockeeAccount if any
+		loggedInUser.getFriends().remove(blockeeAccount.getUserName());
+		blockeeAccount.getFriends().remove(loggedInUser.getUserName());
+
+		// remove existing friendship request between loggedInUser and blockeeAccount if any
+		loggedInUser.getIncomingRequests().remove(blockeeAccount.getUserName());
+		loggedInUser.getOutgoingRequests().remove(blockeeAccount.getUserName());
+		blockeeAccount.getIncomingRequests().remove(loggedInUser.getUserName());
+		blockeeAccount.getOutgoingRequests().remove(loggedInUser.getUserName());
+		
 	}
 
 	@Override

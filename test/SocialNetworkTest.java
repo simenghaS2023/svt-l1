@@ -352,6 +352,32 @@ public class SocialNetworkTest {
 	}
 
 	@Test
+	public void blockTerminatesCurrentFriendship() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.login(john);
+		sn.sendFriendshipTo("Mary");
+		sn.login(mary);
+		sn.acceptFriendshipFrom("John");
+		sn.login(john);
+		sn.block("Mary");
+		assertFalse(john.hasFriend("Mary"));
+		assertFalse(mary.hasFriend("John"));
+	}
+
+	@Test
+	public void blockRemovesPendingFriendshipRequests() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.login(mary);
+		sn.sendFriendshipTo("John");
+		sn.login(john);
+		sn.block("Mary");
+		assertFalse(mary.getOutgoingRequests().contains("John"));
+		assertFalse(john.getIncomingRequests().contains("Mary"));
+	}
+
+	@Test
 	public void unblockMakesBlockeeVisibleToBlockerAgain() {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
