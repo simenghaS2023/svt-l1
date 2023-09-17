@@ -316,4 +316,40 @@ public class SocialNetworkTest {
 		assertFalse(paul.hasFriend("John"));
 	}
 
+	@Test
+	public void blockerIsNotListedToBlockee() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.join("Paul");
+		sn.login(john);
+		sn.block("Mary");
+		sn.login(mary);
+		Set<String> membersVisibleToMary = sn.listMembers();
+		assertFalse(membersVisibleToMary.contains("John"));
+	}
+
+	@Test
+	public void blockPreventsBlockeeFromSendingFriendRequestToBlocker() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.login(john);
+		sn.block("Mary");
+		sn.login(mary);
+		sn.sendFriendshipTo("John");
+		assertFalse(john.getIncomingRequests().contains("Mary"));
+	}
+
+	@Test
+	public void blockDoesNotPreventBlockeeFromSendingFriendRequestToOthers() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		Account paul = sn.join("Paul");
+		sn.login(john);
+		sn.block("Mary");
+		sn.login(mary);
+		sn.sendFriendshipTo("Paul");
+		assertTrue(paul.getIncomingRequests().contains("Mary"));
+	}
+
+
 }

@@ -1,15 +1,19 @@
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class SocialNetwork implements ISocialNetwork{
 	
 	private Set<Account> accounts = new HashSet<Account>();
 	private Account loggedInUser = null;
+	private Map<Account, Set<Account>> blocker2blockee = new HashMap<Account, Set<Account>>();
 
 	// join SN with a new user name
 	public Account join(String userName) {
 		Account newAccount = new Account(userName);
 		accounts.add(newAccount);
+		blocker2blockee.put(newAccount, new HashSet<Account>());
 		return newAccount;
 	}
 
@@ -28,6 +32,10 @@ public class SocialNetwork implements ISocialNetwork{
 	public Set<String> listMembers() {
 		Set<String> members = new HashSet<String>();
 		for (Account each : accounts) {
+			Set<Account> thisBlockees = blocker2blockee.get(each);
+			if (thisBlockees.contains(loggedInUser)) {
+				continue;
+			}
 			members.add(each.getUserName());
 		}
 		return members;
@@ -47,13 +55,26 @@ public class SocialNetwork implements ISocialNetwork{
 	@Override
 	public void sendFriendshipTo(String userName) {
 		Account accountForUserName = findAccountForUserName(userName);
+		Set<Account> recipientBlockees = blocker2blockee.get(accountForUserName);
+		if (recipientBlockees.contains(loggedInUser)) {
+			return;
+		}
 		accountForUserName.requestFriendship(loggedInUser);
 	}
 
 	@Override
 	public void block(String userName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'block'");
+		if (loggedInUser == null) {
+			// throw new NoUserLoggedInException("No user logged in");
+			return;
+		}
+		Account blockeeAccount = findAccountForUserName(userName);
+		if (blockeeAccount == null) {
+			// throw new NoSuchUserException("No such user: " + userName);
+			return;
+		}
+		Set<Account> blockees = blocker2blockee.get(loggedInUser);
+		blockees.add(blockeeAccount);
 	}
 
 	@Override
