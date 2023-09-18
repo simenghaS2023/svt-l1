@@ -29,7 +29,8 @@ public class SocialNetwork implements ISocialNetwork{
 	}
 	
 	// list user names of all members
-	public Set<String> listMembers() {
+	public Set<String> listMembers() throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Set<String> members = new HashSet<String>();
 		for (Account each : accounts) {
 			Set<Account> thisBlockees = blocker2blockee.get(each);
@@ -48,8 +49,9 @@ public class SocialNetwork implements ISocialNetwork{
 	}
 
 	@Override
-	public boolean hasMember(String userName) {
-		return findAccountForUserName(userName) != null;
+	public boolean hasMember(String userName) throws NoUserLoggedInException {
+		ensureLoggedIn();
+		return listMembers().contains(userName);
 	}
 
 	private void ensureLoggedIn() throws NoUserLoggedInException {

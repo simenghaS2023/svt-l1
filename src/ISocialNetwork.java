@@ -18,13 +18,13 @@ public interface ISocialNetwork {
 	// These operations requires a user to be logged in...
 
 	// List all members visible to the logged-in user.
-	public Set<String> listMembers();
+	public Set<String> listMembers() throws NoUserLoggedInException;
 
 	/*
 	 * Returns true if a member has joined the social network (if visible to
 	 * logged-in user)
 	 */
-	public boolean hasMember(String userName);
+	public boolean hasMember(String userName) throws NoUserLoggedInException;
 
 	// Send a friend request to a valid, visible member
 	public void sendFriendshipTo(String userName) throws NoUserLoggedInException;

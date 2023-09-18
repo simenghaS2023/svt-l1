@@ -34,8 +34,14 @@ public class SocialNetworkTest {
 	@Test 
 	public void twoPeopleCanJoinSocialNetworkAndSizeOfNetworkEqualsTwo() {
 		sn.join("Hakan");
-		sn.join("Cecile");
-		Set<String> members = sn.listMembers();
+		Account ceceile = sn.join("Cecile");
+		sn.login(ceceile);
+		Set<String> members = null;
+		try {
+			members = sn.listMembers();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertEquals(2, members.size());
 		assertTrue(members.contains("Hakan"));
 		assertTrue(members.contains("Cecile"));
@@ -71,10 +77,36 @@ public class SocialNetworkTest {
 	
 	@Test 
 	public void canListSingleMemberOfSocialNetworkAfterOnePersonJoiningAndSizeOfNetworkEqualsOne() {
-		sn.join("Hakan");
-		Collection<String> members = sn.listMembers();
+		Account hakan = sn.join("Hakan");
+		sn.login(hakan);
+		Collection<String> members= null;
+		try {
+			members = sn.listMembers();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertEquals(1, members.size());
 		assertTrue(members.contains("Hakan"));
+	}
+
+	@Test
+	public void listMembersDoesNotListBlockerToBlockee() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.login(john);
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		sn.login(mary);
+		Set<String> membersVisibleToMary = null;
+		try {
+			membersVisibleToMary = sn.listMembers();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		assertFalse(membersVisibleToMary.contains("John"));
 	}
 
 	@Test
@@ -349,10 +381,10 @@ public class SocialNetworkTest {
 		sn.login(john);
 		try {
 			sn.leave();
+			assertFalse(sn.listMembers().contains("John"));
 		} catch (NoUserLoggedInException e) {
 			e.printStackTrace();
 		};
-		assertFalse(sn.listMembers().contains("John"));
 	}
 
 	@Test
@@ -411,15 +443,37 @@ public class SocialNetworkTest {
 	public void hasMemberReturnsFalseForNonMembers() {
 		sn.join("Mary");
 		sn.join("Paul");
-		assertFalse(sn.hasMember("John"));
+		try {
+			assertFalse(sn.hasMember("John"));
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
 	public void hasMemberReturnsTrueForMembers() {
 		sn.join("Mary");
 		sn.join("Paul");
-		assertTrue(sn.hasMember("Mary"));
-		assertTrue(sn.hasMember("Paul"));
+		try {
+			assertTrue(sn.hasMember("Mary"));
+			assertTrue(sn.hasMember("Paul"));
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void hasMemberForBlockerReturnsFalseToBlockee() {
+		Account john = sn.join("John");
+		Account mary = sn.join("Mary");
+		sn.login(john);
+		try {
+			sn.block("Mary");
+			sn.login(mary);
+			assertFalse(sn.hasMember("John"));
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 	}
 
 	@Test
@@ -490,8 +544,13 @@ public class SocialNetworkTest {
 			e.printStackTrace();
 		}
 		sn.login(mary);
-		Set<String> membersVisibleToMary = sn.listMembers();
-		assertFalse(membersVisibleToMary.contains("John"));
+		Set<String> membersVisibleToMary;
+		try {
+			membersVisibleToMary = sn.listMembers();
+			assertFalse(membersVisibleToMary.contains("John"));
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -599,7 +658,12 @@ public class SocialNetworkTest {
 			e.printStackTrace();
 		};
 		sn.login(mary);
-		Set<String> membersVisibleToMary = sn.listMembers();
+		Set<String> membersVisibleToMary = null;
+		try {
+			membersVisibleToMary = sn.listMembers();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertTrue(membersVisibleToMary.contains("John"));
 	}
 
