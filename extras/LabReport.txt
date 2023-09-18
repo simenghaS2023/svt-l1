@@ -1,34 +1,27 @@
 LAB REPORT - TDD - L1
 
-Name: 
-Andrew ID:
+Name: Simeng Hao
+Andrew ID: simengha
 
 1. Summary 
 
-// Describe briefly what you did during this lab.
-// List the tasks performed.
-// How many tests did you end up writing? 
+TDD was applied in the process of migrating the SocialNetwork class to comply with the ISocialNetwork interface, as well as subsequent implementation of several new functionalities. As I completed this lab alone, all the required task was done by myself. A total of 20 new tests were written in addition to the 39 existing tests, 19 of which are adapted for the new interface.
  
 2. What worked well? 
 
-// Describe one positive aspect of using TDD. Give a specific example.
+TDD provided a convenient way of keeping track of unfinished work. When I decided to call it a day and complete the rest of the work another time, the failing tests served as a marker for where I left off and where I should pick up. 
 
 3. What didn't work well? 
 
-// What is the worst challenge you faced when applying TDD?
-// Give a specific example. 
+There were a few times where the tests were written wrong so the code passed the tests where it should have failed. While this did not cause too much of an issue in this lab as it was discovered quite early, I imagine that this could have more severe consequences on larger, collaborative projects.
 
 4. How would you do it differently next time when applying TDD?
 
-// Relate this to the challenge. Provide a lesson learned.  
+I think the possibility that the tests themselves are wrong intrinsically follow the nature of tests that they are ultimately code written by human. While I will try to be cautious while writting the tests and be very conscious of which tests should fail and why, I think a more methodic approach is probably needed for larger projects -- perhaps formal verification for tests themselves to ensure consistency with specifications. 
 
 5. Comments and Suggestions on the Lab (Optional)
 
-// Be as specific as possible.
-// Point out any problems you encountered with the exercises performed.
-// Any bugs in assignment description? 
-// If compelled, point out your disagreements with design and implementation decisions imposed on you. 
-// Use bullet points.
+I disagree with the choice to make NoUserLoggedInException a check exception -- not only does this force the change of the method signature, but it also necessitate changes to almost every other tests for no good reason. I am also against check exceptions in principle -- as Robert C. Martin argued in "Clean Code", such usage would generally violate the open/closed principle (exactly because it forces changes in signature or handling at every level). From a more practical perspective, it causes compilation errors for some of the 'hidden' reference tests, which is much less informative than the runtime assertion errors thrown in tests. This has prevented the tests from being self explanatory. 
 
 
 /** This report should be about one page long. **/
