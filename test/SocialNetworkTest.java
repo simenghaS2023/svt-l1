@@ -47,9 +47,17 @@ public class SocialNetworkTest {
 		me = sn.join("Hakan");
 		her = sn.join("Cecile");
 		sn.login(me);
-		sn.sendFriendshipTo("Cecile");
+		try {
+			sn.sendFriendshipTo("Cecile");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(her);
-		sn.acceptFriendshipFrom("Hakan");
+		try {
+			sn.acceptFriendshipFrom("Hakan");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertTrue(me.hasFriend("Cecile"));
 		assertTrue(her.hasFriend("Hakan"));
 	}
@@ -82,7 +90,11 @@ public class SocialNetworkTest {
 		Account me = sn.join("Hakan");
 		Account her = sn.join("Cecile");
 		sn.login(me);
-		sn.sendFriendshipTo("Cecile");
+		try {
+			sn.sendFriendshipTo("Cecile");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertTrue(her.getIncomingRequests().contains("Hakan"));
 	}
 
@@ -92,9 +104,17 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.sendFriendshipTo("Mary");
+		try {
+			sn.sendFriendshipTo("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(mary);
-		sn.acceptFriendshipFrom("John");
+		try {
+			sn.acceptFriendshipFrom("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertTrue(mary.hasFriend("John"));
 		assertTrue(john.hasFriend("Mary"));
 	}
@@ -105,11 +125,23 @@ public class SocialNetworkTest {
 		Account mary = sn.join("Mary");
 		Account paul = sn.join("Paul");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(paul);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.acceptAllFriendships();
+		try {
+			sn.acceptAllFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertTrue(john.hasFriend("Mary"));
 		assertTrue(john.hasFriend("Paul"));
 	}
@@ -119,8 +151,16 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
-		sn.rejectFriendshipFrom("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.rejectFriendshipFrom("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(mary.getIncomingRequests().contains("John"));
 		assertFalse(john.getOutgoingRequests().contains("Mary"));
 	}
@@ -130,9 +170,17 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.rejectFriendshipFrom("Mary");
+		try {
+			sn.rejectFriendshipFrom("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(mary.hasFriend("John"));
 		assertFalse(john.hasFriend("Mary"));
 	}
@@ -143,11 +191,25 @@ public class SocialNetworkTest {
 		Account mary = sn.join("Mary");
 		Account paul = sn.join("Paul");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+
 		sn.login(paul);
-		sn.sendFriendshipTo("John");
+
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.rejectAllFriendships();
+		try {
+			sn.rejectAllFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(john.getOutgoingRequests().contains("Mary"));
 		assertFalse(john.getOutgoingRequests().contains("Paul"));
 		assertFalse(mary.getIncomingRequests().contains("John"));
@@ -160,11 +222,25 @@ public class SocialNetworkTest {
 		Account mary = sn.join("Mary");
 		Account paul = sn.join("Paul");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+
 		sn.login(paul);
-		sn.sendFriendshipTo("John");
+
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.rejectAllFriendships();
+		try {
+			sn.rejectAllFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(john.hasFriend("Mary"));
 		assertFalse(john.hasFriend("Paul"));
 		assertFalse(mary.hasFriend("John"));
@@ -176,9 +252,17 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.autoAcceptFriendships();
+		try {
+			sn.autoAcceptFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertTrue(john.hasFriend("Mary"));
 		assertTrue(mary.hasFriend("John"));
 	}
@@ -188,9 +272,17 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.autoAcceptFriendships();
+		try {
+			sn.autoAcceptFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(john.hasFriend("Mary"));
 		assertFalse(mary.hasFriend("John"));
 	}
@@ -200,11 +292,26 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+
 		sn.login(john);
-		sn.autoAcceptFriendships();
+		try {
+			sn.autoAcceptFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
+
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertTrue(john.hasFriend("Mary"));
 		assertTrue(mary.hasFriend("John"));
 	}
@@ -214,11 +321,23 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.acceptFriendshipFrom("Mary");
+		try {
+			sn.acceptFriendshipFrom("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(mary);
-		sn.sendFriendshipCancellationTo("John");
+		try {
+			sn.sendFriendshipCancellationTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(john.hasFriend("Mary"));
 		assertFalse(mary.hasFriend("John"));
 	}
@@ -228,7 +347,11 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		sn.join("Mary");
 		sn.login(john);
-		sn.leave();
+		try {
+			sn.leave();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(sn.listMembers().contains("John"));
 	}
 
@@ -237,11 +360,23 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(john);
-		sn.acceptFriendshipFrom("Mary");
+		try {
+			sn.acceptFriendshipFrom("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(john);
-		sn.leave();
+		try {
+			sn.leave();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(mary.hasFriend("John"));
 	}
 
@@ -292,9 +427,17 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.cancelAutoAcceptFriendships();
+		try {
+			sn.cancelAutoAcceptFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertFalse(john.hasFriend("Mary"));
 		assertFalse(mary.hasFriend("John"));
 	}
@@ -305,13 +448,32 @@ public class SocialNetworkTest {
 		Account mary = sn.join("Mary");
 		Account paul = sn.join("Paul");
 		sn.login(john);
-		sn.autoAcceptFriendships();
+		try {
+			sn.autoAcceptFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+
 		sn.login(john);
-		sn.cancelAutoAcceptFriendships();
+		try {
+			sn.cancelAutoAcceptFriendships();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
+
 		sn.login(paul);
-		sn.sendFriendshipTo("John");
+
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertFalse(john.hasFriend("Paul"));
 		assertFalse(paul.hasFriend("John"));
 	}
@@ -322,7 +484,11 @@ public class SocialNetworkTest {
 		Account mary = sn.join("Mary");
 		sn.join("Paul");
 		sn.login(john);
-		sn.block("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(mary);
 		Set<String> membersVisibleToMary = sn.listMembers();
 		assertFalse(membersVisibleToMary.contains("John"));
@@ -333,9 +499,19 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.block("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertFalse(john.getIncomingRequests().contains("Mary"));
 	}
 
@@ -345,9 +521,19 @@ public class SocialNetworkTest {
 		Account mary = sn.join("Mary");
 		Account paul = sn.join("Paul");
 		sn.login(john);
-		sn.block("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+
 		sn.login(mary);
-		sn.sendFriendshipTo("Paul");
+
+		try {
+			sn.sendFriendshipTo("Paul");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertTrue(paul.getIncomingRequests().contains("Mary"));
 	}
 
@@ -356,11 +542,23 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.sendFriendshipTo("Mary");
+		try {
+			sn.sendFriendshipTo("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		sn.login(mary);
-		sn.acceptFriendshipFrom("John");
+		try {
+			sn.acceptFriendshipFrom("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(john);
-		sn.block("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertFalse(john.hasFriend("Mary"));
 		assertFalse(mary.hasFriend("John"));
 	}
@@ -370,9 +568,17 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(john);
-		sn.block("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertFalse(mary.getOutgoingRequests().contains("John"));
 		assertFalse(john.getIncomingRequests().contains("Mary"));
 	}
@@ -382,8 +588,16 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.block("Mary");
-		sn.unblock("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
+		try {
+			sn.unblock("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(mary);
 		Set<String> membersVisibleToMary = sn.listMembers();
 		assertTrue(membersVisibleToMary.contains("John"));
@@ -394,10 +608,22 @@ public class SocialNetworkTest {
 		Account john = sn.join("John");
 		Account mary = sn.join("Mary");
 		sn.login(john);
-		sn.block("Mary");
-		sn.unblock("Mary");
+		try {
+			sn.block("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
+		try {
+			sn.unblock("Mary");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(mary);
-		sn.sendFriendshipTo("John");
+		try {
+			sn.sendFriendshipTo("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		assertTrue(john.getIncomingRequests().contains("Mary"));
 	}
 
@@ -409,7 +635,12 @@ public class SocialNetworkTest {
 		Account peter = sn.join("Peter");
 		setUpFriendshipDiamond(sn, john, mary, paul, peter);
 		sn.login(john);
-		Set<String> recommendedFriends = sn.recommendFriends();
+		Set<String> recommendedFriends = null;
+		try {
+			recommendedFriends = sn.recommendFriends();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertTrue(recommendedFriends.contains("Peter"));
 	}
 
@@ -421,11 +652,24 @@ public class SocialNetworkTest {
 		Account peter = sn.join("Peter");
 		setUpFriendshipDiamond(sn, john, mary, paul, peter);
 		sn.login(john);
-		sn.sendFriendshipTo("Peter");
+		try {
+			sn.sendFriendshipTo("Peter");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(peter);
-		sn.acceptFriendshipFrom("John");
+		try {
+			sn.acceptFriendshipFrom("John");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
 		sn.login(john);
-		Set<String> recommendedFriends = sn.recommendFriends();
+		Set<String> recommendedFriends = null;
+		try {
+			recommendedFriends = sn.recommendFriends();
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 		assertFalse(recommendedFriends.contains("Peter"));
 	}
 
@@ -439,18 +683,98 @@ public class SocialNetworkTest {
 	 */
 	public void setUpFriendshipDiamond(SocialNetwork sn, Account john, Account mary, Account paul, Account peter) {
 		sn.login(john);
-		sn.sendFriendshipTo("Mary");
-		sn.sendFriendshipTo("Paul");
-		sn.login(peter);
-		sn.sendFriendshipTo("Mary");
-		sn.sendFriendshipTo("Paul");
-		sn.login(mary);
-		sn.acceptFriendshipFrom("John");
-		sn.acceptFriendshipFrom("Peter");
-		sn.login(paul);
-		sn.acceptFriendshipFrom("John");
-		sn.acceptFriendshipFrom("Peter");
-		sn.login(peter);
+		try {
+			sn.sendFriendshipTo("Mary");
+			sn.sendFriendshipTo("Paul");
+			sn.login(peter);
+			sn.sendFriendshipTo("Mary");
+			sn.sendFriendshipTo("Paul");
+			sn.login(mary);
+			sn.acceptFriendshipFrom("John");
+			sn.acceptFriendshipFrom("Peter");
+			sn.login(paul);
+			sn.acceptFriendshipFrom("John");
+			sn.acceptFriendshipFrom("Peter");
+			sn.login(peter);
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		};
+
+	}
+
+	@Test
+	public void snThrowsNoUserLoggedInExceptionWhenNoUserIsLoggedInWhenPerformingUserSpecificOperation() {
+		// sn.sendFriendshipTo("John");
+		// sn.block("John");
+		// sn.unblock("John");
+		// sn.sendFriendshipCancellationTo("John");
+		// sn.acceptFriendshipFrom("John");
+		// sn.rejectFriendshipFrom("John");
+		// sn.autoAcceptFriendships();
+		// sn.cancelAutoAcceptFriendships();
+		// sn.recommendFriends();
+		// sn.leave();
+		sn.join("john");
+		try {
+			sn.sendFriendshipTo("John");
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.block("John");
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.unblock("John");
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.sendFriendshipCancellationTo("John");
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.acceptFriendshipFrom("John");
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.rejectFriendshipFrom("John");
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.autoAcceptFriendships();
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.cancelAutoAcceptFriendships();
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.recommendFriends();
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
+		try {
+			sn.leave();
+			fail("NoUserLoggedInException not thrown");
+		} catch (NoUserLoggedInException e) {
+			e.printStackTrace();
+		}
 
 	}
 

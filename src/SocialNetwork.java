@@ -52,8 +52,15 @@ public class SocialNetwork implements ISocialNetwork{
 		return findAccountForUserName(userName) != null;
 	}
 
+	private void ensureLoggedIn() throws NoUserLoggedInException {
+		if (loggedInUser == null) {
+			throw new NoUserLoggedInException();
+		}
+	}
+
 	@Override
-	public void sendFriendshipTo(String userName) {
+	public void sendFriendshipTo(String userName) throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Account accountForUserName = findAccountForUserName(userName);
 		Set<Account> recipientBlockees = blocker2blockee.get(accountForUserName);
 		if (recipientBlockees.contains(loggedInUser)) {
@@ -62,12 +69,10 @@ public class SocialNetwork implements ISocialNetwork{
 		accountForUserName.requestFriendship(loggedInUser);
 	}
 
+
 	@Override
-	public void block(String userName) {
-		if (loggedInUser == null) {
-			// throw new NoUserLoggedInException("No user logged in");
-			return;
-		}
+	public void block(String userName) throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Account blockeeAccount = findAccountForUserName(userName);
 		if (blockeeAccount == null) {
 			// throw new NoSuchUserException("No such user: " + userName);
@@ -89,26 +94,30 @@ public class SocialNetwork implements ISocialNetwork{
 	}
 
 	@Override
-	public void unblock(String userName) {
+	public void unblock(String userName) throws NoUserLoggedInException{
+		ensureLoggedIn();
 		Set<Account> blockees = blocker2blockee.get(loggedInUser);
 		Account accountToUnblock = findAccountForUserName(userName);
 		blockees.remove(accountToUnblock);
 	}
 
 	@Override
-	public void sendFriendshipCancellationTo(String userName) {
+	public void sendFriendshipCancellationTo(String userName) throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Account accountForUserName = findAccountForUserName(userName);
 		accountForUserName.cancelFriendship(loggedInUser);
 	}
 
 	@Override
-	public void acceptFriendshipFrom(String userName) {
+	public void acceptFriendshipFrom(String userName) throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Account accountForUserName = findAccountForUserName(userName);
 		accountForUserName.friendshipAccepted(loggedInUser);
 	}
 
 	@Override
-	public void acceptAllFriendships() {
+	public void acceptAllFriendships() throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Set<String> incomingRequestCopy = new HashSet<String>(loggedInUser.getIncomingRequests());
 		for (String each : incomingRequestCopy) {
 			acceptFriendshipFrom(each);
@@ -116,13 +125,15 @@ public class SocialNetwork implements ISocialNetwork{
 	}
 
 	@Override
-	public void rejectFriendshipFrom(String userName) {
+	public void rejectFriendshipFrom(String userName) throws NoUserLoggedInException {
+		ensureLoggedIn();
 		Account accountForUserName = findAccountForUserName(userName);
 		accountForUserName.friendshipRejected(accountForUserName);
 	}
 
 	@Override
-	public void rejectAllFriendships() {
+	public void rejectAllFriendships() throws NoUserLoggedInException{
+		ensureLoggedIn();
 		Set<String> incomingRequestCopy = new HashSet<String>(loggedInUser.getIncomingRequests());
 		for (String each : incomingRequestCopy) {
 			rejectFriendshipFrom(each);
@@ -130,17 +141,20 @@ public class SocialNetwork implements ISocialNetwork{
 	}
 
 	@Override
-	public void autoAcceptFriendships() {
+	public void autoAcceptFriendships() throws NoUserLoggedInException{
+		ensureLoggedIn();
 		loggedInUser.autoAcceptFriendships();
 	}
 
 	@Override
-	public void cancelAutoAcceptFriendships() {
+	public void cancelAutoAcceptFriendships() throws NoUserLoggedInException{
+		ensureLoggedIn();
 		loggedInUser.cancelAutoAcceptFriendships();
 	}
 
 	@Override
-	public Set<String> recommendFriends() {
+	public Set<String> recommendFriends() throws NoUserLoggedInException{
+		ensureLoggedIn();
 		Set<String> immediateFriends = loggedInUser.getFriends();
 		Map<String, Integer> secondDegreeFriends2FriendshipWithImmediateFriendsCount = new HashMap<String, Integer>();
 		for (String immediateFriendUsername : immediateFriends) {
@@ -166,7 +180,8 @@ public class SocialNetwork implements ISocialNetwork{
 	}
 
 	@Override
-	public void leave() {
+	public void leave() throws NoUserLoggedInException{
+		ensureLoggedIn();
 		for (Account account : accounts) {
 			account.getFriends().remove(loggedInUser.getUserName());
 			account.getIncomingRequests().remove(loggedInUser.getUserName());
